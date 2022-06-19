@@ -8,7 +8,7 @@ const TILE = {
 	RED:	7,
 	PLAID:	8
 };
-const COLOR = [null,'pink','orange','purple','green','blue','yellow','red','plaid'];
+const COLOR = [null,'pink','orange','purple','green','blue','yellow','red','gray'];
 const STATE = {
 	NEUTRAL:0,
 	ORANGES:1,
@@ -20,9 +20,13 @@ var maze;
 function randInt(n) { return Math.floor(Math.random() * n); }
 
 function generateMaze (w,h) {
-	maze = Array(w).fill(Array(h));
 	var state = STATE.NEUTRAL;
 	var par = 0;
+
+	// Initialize maze 2D array
+	maze = new Array(w);
+	for (let i=0; i<w; i++)
+		maze[i] = new Array(h);
 
 	// Generate safe starting column
 	for (let i=0; i<h; i++)
@@ -37,7 +41,6 @@ function generateMaze (w,h) {
 		// Place tile
 		let tile = 1 + randInt(state == STATE.ORANGES ? 4 : 5);
 		maze[x][y] = tile;
-		console.log("Placed " + COLOR[tile] + " at " + x + "," + y);
 
 		// Change state depending on which tile was placed
 		switch (tile) {
@@ -78,6 +81,13 @@ function generateMaze (w,h) {
 	}
 
 	/* Fill rest of maze with random blocks */
+	for (let x=0; x<w; x++) {
+		for (let y=0; y<h; y++) {
+			if (!maze[x][y])
+				// Weighted with +0-3
+				maze[x][y] = Math.min(1 + randInt(7) + randInt(3), 7);
+		}
+	}
 }
 
 function drawMaze() {
@@ -97,5 +107,5 @@ function drawMaze() {
 }
 
 
-generateMaze(8,6);
+generateMaze(16,10);
 drawMaze();
