@@ -1,37 +1,12 @@
-const TILE = {
-	PINK:	1,
-	ORANGE:	2,
-	PURPLE:	3,
-	GREEN:	4,
-	BLUE:	5,
-	YELLOW:	6,
-	RED:	7,
-	PLAID:	8
-};
-const COLOR = [null,'pink','orange','purple','lime','blue','yellow','red','gray'];
-const STATE = {
-	NEUTRAL:0,
-	ORANGES:1,
-	LEMONS: 2
-}
-
-var maze;
-
-function randInt(n) { return Math.floor(Math.random() * n); }
-
 function generateMaze (w,h) {
-	var state = STATE.NEUTRAL;
-	var par = 0;
+	let state = STATE.NEUTRAL;
+	let par = 0;
 
 	// Initialize maze 2D array
-	maze = new Array(w);
+	let maze = new Array(w);
 	for (let i=0; i<w; i++)
 		maze[i] = new Array(h);
 
-	// Generate safe starting column
-/*	for (let i=0; i<h; i++)
-		maze[0][i] = TILE.PINK;
-*/
 	// Initialize X,Y and pick random starting Y
 	let x = 0;
 	let y = randInt(h);
@@ -84,13 +59,16 @@ function generateMaze (w,h) {
 	for (let x=0; x<w; x++) {
 		for (let y=0; y<h; y++) {
 			if (!maze[x][y])
-				// Weighted with +0-2
-				maze[x][y] = Math.min(1 + randInt(7) + randInt(2), 7);
+				// Weighted with +0-1.5
+				maze[x][y] = Math.min(1 + randInt(7) + randInt(1.5), 7);
 		}
 	}
+
+	console.log(par);
+	return maze;
 }
 
-function drawMaze() {
+function drawMaze(maze) {
 	let canvas = document.getElementById('canvas');
 	let ctx = canvas.getContext('2d');
 	let b = 40;
@@ -106,6 +84,20 @@ function drawMaze() {
 	}
 }
 
+function viewAverages(maze) {
+	let count = Array(COLOR.length).fill(0);
+	let w = maze.length;
+	let h = maze[0].length;
+	for (let x=0; x<w; x++)
+		for (let y=0; y<h; y++)
+			count[maze[x][y]]++;
 
-generateMaze(16,10);
-drawMaze();
+	let t = w*h;
+	for (let i=0; i<count.length; i++)
+		console.log(""+COLOR[i]+": "+count[i]/t);
+}
+
+
+var m = generateMaze(16,10);
+drawMaze(m);
+viewAverages(m);
