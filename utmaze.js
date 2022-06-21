@@ -8,7 +8,7 @@ const TILE = {
 	RED:	7,
 	PLAID:	8
 };
-const COLOR = [null,'pink','orange','purple','green','blue','yellow','red','gray'];
+const COLOR = [null,'pink','orange','purple','lime','blue','yellow','red','gray'];
 const STATE = {
 	NEUTRAL:0,
 	ORANGES:1,
@@ -29,11 +29,11 @@ function generateMaze (w,h) {
 		maze[i] = new Array(h);
 
 	// Generate safe starting column
-	for (let i=0; i<h; i++)
+/*	for (let i=0; i<h; i++)
 		maze[0][i] = TILE.PINK;
-
+*/
 	// Initialize X,Y and pick random starting Y
-	let x = 1;
+	let x = 0;
 	let y = randInt(h);
 
 	/* GENERATE SOLUTION PATH */
@@ -59,8 +59,8 @@ function generateMaze (w,h) {
 		let r = Math.random();
 		let x2 = x;
 		let y2 = y;
-		if (r < 0.5)		x2++;
-		else if (r < 0.7)	y2--;
+		if (r < 0.4)		x2++;
+		else if (r < 0.65)	y2--;
 		else if (r < 0.9)	y2++;
 		else			x2--;
 
@@ -84,8 +84,8 @@ function generateMaze (w,h) {
 	for (let x=0; x<w; x++) {
 		for (let y=0; y<h; y++) {
 			if (!maze[x][y])
-				// Weighted with +0-3
-				maze[x][y] = Math.min(1 + randInt(7) + randInt(3), 7);
+				// Weighted with +0-2
+				maze[x][y] = Math.min(1 + randInt(7) + randInt(2), 7);
 		}
 	}
 }
