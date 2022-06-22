@@ -1,11 +1,7 @@
 function generateMaze (w,h) {
+	let maze = emptyMaze(w,h);
 	let state = STATE.NEUTRAL;
 	let par = 0;
-
-	// Initialize maze 2D array
-	let maze = new Array(w);
-	for (let i=0; i<w; i++)
-		maze[i] = new Array(h);
 
 	// Initialize X,Y and pick random starting Y
 	let x = 0;
@@ -66,22 +62,6 @@ function generateMaze (w,h) {
 
 	console.log(par);
 	return maze;
-}
-
-function drawMaze(maze) {
-	let canvas = document.getElementById('canvas');
-	let ctx = canvas.getContext('2d');
-	let b = 40;
-
-	for (let x=0; x<maze.length; x++) {
-		for (let y=0; y<maze[0].length; y++) {
-			ctx.beginPath();
-			ctx.rect(b*x,b*y,b,b);
-			ctx.fillStyle = (COLOR[maze[x][y]] || 'black');
-			ctx.fill();
-			ctx.closePath();
-		}
-	}
 }
 
 function viewAverages(maze) {
