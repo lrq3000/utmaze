@@ -11,5 +11,13 @@
 	</style>
 </head>
 <body>
+	<p>Size:
+		W:<input type="number" id="width" value="8" min="1" onchange="initMaze()">
+		H:<input type="number" id="height" value="6" min="1" max="64" onchange="initMaze()">
+	</p>
+	<p>Code:
+		<input type="text" id="levelcode">
+		<button onclick="maze=load(document.getElementById('levelcode').value);drawMaze(maze);">Load</button>
+	</p>
 	<canvas width="1280" height="720" id="canvas">Error displaying canvas!</canvas>
 </body>
