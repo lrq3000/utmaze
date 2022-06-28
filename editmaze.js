@@ -9,20 +9,23 @@ const rect = canvas.getBoundingClientRect();
 
 
 function tick() {
-	drawMaze(maze, width.value, height.value);
+	drawMaze(maze);
 }
 
 function pushCode() {
 	history.pushState(null,'',window.location.pathname + "?code=" + base64(maze));
 }
 
+function getWidth()	{ return Number(width.value) }
+function getHeight()	{ return Number(height.value) }
+
 function doResize() {
-	resizeMaze(maze, width.value, height.value);
+	resizeMaze(maze, getWidth(), getHeight());
 	pushCode();
 	tick();
 }
 function doRandom() {
-	maze = randomMaze(width.value, height.value);
+	maze = randomMaze(getWidth(), getHeight());
 	pushCode();
 	tick();
 }
@@ -37,7 +40,7 @@ function doMazeLoad(base64) {
 function paintTile(e) {
 	let x = Math.floor((e.clientX - rect.left) / b);
 	let y = Math.floor((e.clientY - rect.top) / b)
-	if (x>=0 && x<width.value && y>=0 && y<height.value)
+	if (x>=0 && x<getWidth() && y>=0 && y<getHeight())
 		maze[x][y] = brush;
 	tick();
 }
