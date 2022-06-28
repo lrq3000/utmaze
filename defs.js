@@ -20,14 +20,37 @@ var b = 40;	// Breadth of tile (Size in px)
 
 function randInt(n) { return Math.floor(Math.random() * n); }
 
-function emptyMaze (w,h) {
+function emptyMaze(w,h) {
 	let maze = new Array(w);
 	for (let i=0; i<w; i++)
 		maze[i] = new Array(h);
 	return maze;
 }
 
-function drawMaze(maze) {
+function resizeMaze(maze,w2,h2) {
+	let w1 = maze.length;
+
+	if (w2 <= w1) {
+		maze.length = w2;
+		for (let i=0; i<w2; i++)
+			maze[i].length = h2;
+	}
+	else {
+		for (let i=0; i<w1; i++)
+			maze[i].length = h2;
+		for (let i=w1; i<w2; i++)
+			maze[i] = new Array(h2);
+	}
+
+	return maze;
+}
+
+// Check yellow tiles, "electrify" all touching bodies of blue tiles
+function electrify(maze) {
+
+}
+
+function drawMaze(maze, w, h) {
 	let canvas = document.getElementById('canvas');
 	let ctx = canvas.getContext('2d');
 
@@ -42,7 +65,7 @@ function drawMaze(maze) {
 	}
 }
 
-let b64s = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+let b64s = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
 function base64(maze) {
 	let b64 = '';
 	let tileBuf = [];
