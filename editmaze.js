@@ -21,6 +21,11 @@ function doResize() {
 	pushCode();
 	tick();
 }
+function doRandom() {
+	maze = randomMaze(width.value, height.value);
+	pushCode();
+	tick();
+}
 
 function doMazeLoad(base64) {
 	maze = load(base64);
