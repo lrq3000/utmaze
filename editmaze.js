@@ -1,27 +1,51 @@
-var maze = emptyMaze(8,6);
+var maze = emptyMaze(8,4);
 var brush = TILE.NONE;
 
 var canvas = document.getElementById('canvas');
 var codebar = document.getElementById('levelcode');
+var width = document.getElementById('width');
+var height = document.getElementById('height');
+
+const rect = canvas.getBoundingClientRect();
+
 
 function tick() {
-	drawMaze(maze);
-	codebar.value = base64(maze);
+	drawMaze(maze, width.value, height.value);
 }
 
-function initMaze() {
-	maze = emptyMaze(document.getElementById('width').value, document.getElementById('height').value);
+function doResize() {
+	resizeMaze(maze, width.value, height.value);
+	tick();
+}
+
+function doMazeLoad(base64) {
+	maze = load(base64 || codebar.value);
+	width.value = maze.length;
+	height.value = maze[0].length;
 	tick();
 }
 
 function paintTile(e) {
-	const rect = canvas.getBoundingClientRect();
-	maze[Math.floor((e.clientX - rect.left) / b)][Math.floor((e.clientY - rect.top) / b)] = brush;
+	let x = Math.floor((e.clientX - rect.left) / b);
+	let y = Math.floor((e.clientY - rect.top) / b)
+	if (x>=0 && x<width.value && y>=0 && y<height.value)
+		maze[x][y] = brush;
 	tick();
 }
 canvas.addEventListener('mousedown', e => { /*e.preventDefault();*/ paintTile(e) });
 canvas.addEventListener('mousemove', e => { if (e.buttons == 1) paintTile(e) });
+canvas.addEventListener('mouseup', e => {
+	if (
+		e.clientX >= rect.left
+		&& e.clientX <= rect.right
+		&& e.clientY >= rect.top
+		&& e.clientY <= rect.bottom
+	)
+		history.pushState(null,'',window.location.pathname + "?code=" + base64(maze));
+});
 
 document.addEventListener('keydown', e => { if (!isNaN(e.key)) brush = parseInt(e.key) });
+
+doMazeLoad(new URLSearchParams(window.location.search).get('code'));
 
 tick();
