@@ -7,9 +7,12 @@ const TILE = {
 	BLUE:	5,
 	YELLOW:	6,
 	RED:	7,
-	PLAID:	8
+	PLAID:	8,
+	ELEC:	9,
+	START:	10,
+	END:	11
 };
-const COLOR = ['black','pink','orange','purple','lime','blue','yellow','red','gray'];
+const COLOR = ['Black','#FEBFC0','#FFC049','#C000C0','#9BFF78','#4040FF','#FFFF80','#FF3F3F','plaid','#8080FF','light gray','Gray'];
 const STATE = {
 	NEUTRAL:0,
 	ORANGES:1,
@@ -46,13 +49,106 @@ function resizeMaze(maze,w2,h2) {
 }
 
 // Check yellow tiles, "electrify" all touching bodies of blue tiles
-function electrify(maze) {
+function _electrify(maze,x,y) {
+	// Escape if out of bounds
+	if (x<0 || x>=maze.length || y<0 || y>=maze[0].length)
+		return;
 
+	if (maze[x][y] != TILE.BLUE)
+		return;
+
+	maze[x][y] = TILE.ELEC;
+	_electrify(maze,x-1,y);
+	_electrify(maze,x+1,y);
+	_electrify(maze,x,y-1);
+	_electrify(maze,x,y+1);
 }
 
-function drawMaze(maze, w, h) {
+function electrify(maze) {
+	for (let x=0; x<maze.length; x++) {
+		for (let y=0; y<maze[0].length; y++) {
+			if (maze[x][y] == TILE.YELLOW) {
+				_electrify(maze,x-1,y);
+				_electrify(maze,x+1,y);
+				_electrify(maze,x,y-1);
+				_electrify(maze,x,y+1);
+			}
+		}
+	}
+}
+
+function randomMaze (w,h) {
+	let maze = emptyMaze(w,h);
+	let state = STATE.NEUTRAL;
+	let par = 0;
+
+	// Initialize X,Y and pick random starting Y
+	let x = 0;
+	let y = randInt(h);
+
+	/* GENERATE SOLUTION PATH */
+	while (true) {
+		// Place tile
+		let tile = 1 + randInt(state == STATE.ORANGES ? 4 : 5);
+		maze[x][y] = tile;
+
+		// Change state depending on which tile was placed
+		switch (tile) {
+			case TILE.ORANGE:
+				state = STATE.ORANGES;
+				break;
+			case TILE.PURPLE:
+				state = STATE.LEMONS;
+				break;
+			case TILE.GREEN:
+				par++;
+				break;
+		}
+
+		// Select next tile
+		let r = Math.random();
+		let x2 = x;
+		let y2 = y;
+		if (r < 0.4)		x2++;
+		else if (r < 0.65)	y2--;
+		else if (r < 0.9)	y2++;
+		else			x2--;
+
+		// If too far up/left/down, go right instead.
+		// Set coords.
+		if (x2 <= 0 || y2 < 0 || y2 >= h)
+			x++;
+		else {
+			x = x2;
+			y = y2;
+		}
+
+		// If coords were set too far right, go back and place finish tile instead.
+		if (x >= w) {
+			maze[--x][y] = TILE.END;
+			break;
+		}
+	}
+
+	/* Fill rest of maze with random blocks */
+	for (let x=0; x<w; x++) {
+		for (let y=0; y<h; y++) {
+			if (!maze[x][y])
+				// Weighted with +0-1.5
+				maze[x][y] = Math.min(1 + randInt(7) + randInt(1.5), 7);
+		}
+	}
+
+	console.log(par);
+	electrify(maze);
+	return maze;
+}
+
+function drawMaze(maze) {
 	let canvas = document.getElementById('canvas');
 	let ctx = canvas.getContext('2d');
+
+	ctx.clearRect(0,0,canvas.width,canvas.height);
 
 	for (let x=0; x<maze.length; x++) {
 		for (let y=0; y<maze[0].length; y++) {
@@ -98,5 +194,6 @@ function load(base64) {
 		for (let y=0; y<h; y++)
 			maze[x][y] = tileBuf[i++];
 
+	electrify(maze);
 	return maze;
 }
