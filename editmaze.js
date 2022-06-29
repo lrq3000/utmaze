@@ -25,13 +25,13 @@ function doResize() {
 	tick();
 }
 function doRandom() {
-	maze.random(getWidth(), getHeight());
+	maze = Maze.random(getWidth(), getHeight());
 	pushCode();
 	tick();
 }
 
 function doMazeLoad(base64) {
-	maze.fromBase64(base64);
+	maze = Maze.fromBase64(base64);
 	width.value = maze.length;
 	height.value = maze[0].length;
 	tick();

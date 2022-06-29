@@ -8,11 +8,9 @@ const TILE = {
 	YELLOW:	6,
 	RED:	7,
 	PLAID:	8,
-	ELEC:	9,
-	START:	10,
-	END:	11
+	ELEC:	9
 };
-const COLOR = ['Black','#FEBFC0','#FFC049','#C000C0','#9BFF78','#4040FF','#FFFF80','#FF3F3F','plaid','#8080FF','light gray','Gray'];
+const COLOR = ['Black','#FEBFC0','#FFC049','#C000C0','#9BFF78','#4040FF','#FFFF80','#FF3F3F','#555555','#8080FF'];
 const STATE = {
 	NEUTRAL:0,
 	ORANGES:1,

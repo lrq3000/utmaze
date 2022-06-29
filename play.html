@@ -6,15 +6,17 @@
 	<script src="Player.js"></script>
 	<script src="Draw.js"></script>
 	<script defer>
-	var m = new Maze(8,6);
-	m.random(8,6);
+	var m = Maze.random(8,6);
 
-	var p = new Player(m,0,0);
+	var p = new Player(m);
 
 	document.addEventListener('keydown', e => {
-		e.preventDefault();
-		if (e.key.includes('Arrow'))
+		if (e.key.includes('Arrow')) {
+			e.preventDefault();
 			p.move(VEC[e.key.substring(5).toUpperCase()]);
+		}
+		else if (e.key == 'r')
+			p = new Player(m);
 		drawMaze(m);
 		drawPlayer(p);
 	});

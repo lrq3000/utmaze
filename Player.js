@@ -1,23 +1,23 @@
 const VEC = {
-	UP:	[0,-1],
-	RIGHT:	[1,0],
-	DOWN:	[0,1],
-	LEFT:	[-1,0],
-	reverse: vec => [-1*vec[0], -1*vec[1]]
+	UP:	{x:0,y:-1},
+	RIGHT:	{x:1,y:0},
+	DOWN:	{x:0,y:1},
+	LEFT:	{x:-1,y:0},
+	reverse: vec => ({x:-1*vec.x, y:-1*vec.y})
 };
 
 class Player {
-	constructor(maze,x,y) {
+	constructor(maze) {
 		this.maze = maze;
-		this.x = x;
-		this.y = y;
+		this.x = 0;
+		this.y = maze.startY || 0;
 		this.score = 0;
 		this.state = STATE.NEUTRAL;
 	}
 
 	move(vec) {
-		let x2 = this.x + vec[0];
-		let y2 = this.y + vec[1];
+		let x2 = this.x + vec.x;
+		let y2 = this.y + vec.y;
 
 		if (x2<0 || x2>=this.maze.width || y2<0 || y2>=this.maze.height)
 			return;
@@ -26,6 +26,7 @@ class Player {
 			case TILE.ORANGE:
 				this.state = STATE.ORANGES;
 			case TILE.PINK:
+			case TILE.PLAID:
 				this.x = x2;
 				this.y = y2;
 				break;
