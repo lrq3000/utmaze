@@ -1,27 +1,18 @@
 class Maze extends Array {
 	constructor(w,h) {
 		super(w);
-		for (let i=0; i<w; i++)
-			this[i] = new Array(h);
+		this.#clear(w,h);
 	}
 
-	resize(w2,h2) {
-		let w1 = this.length;
-
-		if (w2 <= w1) {
-			this.length = w2;
-			for (let i=0; i<w2; i++)
-				this[i].length = h2;
-		}
-		else {
-			for (let i=0; i<w1; i++)
-				this[i].length = h2;
-			for (let i=w1; i<w2; i++)
-				this[i] = new Array(h2);
-		}
+	#clear(w,h) {
+		for (let i=0; i<w; i++)
+			this[i] = new Array(h);
+		this.width = w;
+		this.height = h;
 	}
 
 	random(w,h) {
+		this.#clear(w,h);
 		let state = STATE.NEUTRAL;
 		let par = 0;
 
@@ -87,8 +78,8 @@ class Maze extends Array {
 	}
 
 	electrify() {
-		for (let x=0; x<this.length; x++) {
-			for (let y=0; y<this[0].length; y++) {
+		for (let x=0; x<this.width; x++) {
+			for (let y=0; y<this.height; y++) {
 				if (this[x][y] == TILE.YELLOW) {
 					this.#electrify(x-1,y);
 					this.#electrify(x+1,y);
@@ -98,10 +89,9 @@ class Maze extends Array {
 			}
 		}
 	}
-
 	#electrify(x,y) {
 		// Escape if out of bounds
-		if (x<0 || x>=this.length || y<0 || y>=this[0].length)
+		if (x<0 || x>=this.width || y<0 || y>=this.height)
 			return;
 
 		if (this[x][y] != TILE.BLUE)
@@ -114,6 +104,26 @@ class Maze extends Array {
 		this.#electrify(x,y+1);
 	}
 
+	resize(w2,h2) {
+		let w1 = this.width;
+
+		if (w2 <= w1) {
+			this.length = w2;
+			for (let i=0; i<w2; i++)
+				this[i].length = h2;
+		}
+		else {
+			for (let i=0; i<w1; i++)
+				this[i].length = h2;
+			for (let i=w1; i<w2; i++)
+				this[i] = new Array(h2);
+		}
+
+		this.width = w2;
+		this.height = h2;
+	}
+
+
 	static b64s = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
 
 	toBase64() {
@@ -121,24 +131,24 @@ class Maze extends Array {
 		let tileBuf = [];
 
 		// Load tiles into 1-dimensional buffer
-		for (let x=0; x<this.length; x++)
+		for (let x=0; x<this.width; x++)
 			tileBuf = tileBuf.concat(this[x]);
 
 		// 6 bits per character base64-encoded, 3 bits per tile
 		for (let i=0; i<tileBuf.length; )
-			b64 += b64s.charAt((tileBuf[i++] << 3) | tileBuf[i++]);
+			b64 += Maze.b64s.charAt((tileBuf[i++] << 3) | tileBuf[i++]);
 
 		// Encode maze height (max 64)
-		return b64s.charAt(this[0].length-1)+b64;
+		return Maze.b64s.charAt(this.height-1)+b64;
 	}
 
 	fromBase64(base64) {
-		let h = 1 + b64s.indexOf(base64.charAt(0));
+		let h = 1 + Maze.b64s.indexOf(base64.charAt(0));
 		let w = (base64.length - 1) * 2 / h;    // w*h=a, a/h=w
 
 		let tileBuf = [];
 		for (let i=1; i<base64.length; i++) {
-			let octets = b64s.indexOf(base64.charAt(i));
+			let octets = Maze.b64s.indexOf(base64.charAt(i));
 			tileBuf.push(octets >>> 3);
 			tileBuf.push(octets & 0b111);
 		}
@@ -148,6 +158,6 @@ class Maze extends Array {
 			for (let y=0; y<h; y++)
 				this[x][y] = tileBuf[i++];
 
-		electrify(this);
+		this.electrify();
 	}
 }

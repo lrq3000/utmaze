@@ -17,9 +17,12 @@ function drawMaze(maze) {
         }
 }
 
-function drawPlayer(x,y) {
-        let canvas = document.getElementById('canvas');
+function drawPlayer(player) {
+	let canvas = document.getElementById('canvas');
         let ctx = canvas.getContext('2d');
+
+	let x = player.x;
+	let y = player.y;
 
         ctx.beginPath();
         ctx.arc(x*b+(b/2), y*b+(b/2), b/3, 0, 2*Math.PI, false);

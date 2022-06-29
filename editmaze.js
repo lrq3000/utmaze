@@ -1,4 +1,4 @@
-var maze = emptyMaze(8,4);
+var maze = new Maze(8,4);
 var brush = TILE.NONE;
 
 var canvas = document.getElementById('canvas');
@@ -13,25 +13,25 @@ function tick() {
 }
 
 function pushCode() {
-	history.pushState(null,'',window.location.pathname + "?code=" + base64(maze));
+	history.pushState(null,'',window.location.pathname + "?code=" + maze.toBase64());
 }
 
 function getWidth()	{ return Number(width.value) }
 function getHeight()	{ return Number(height.value) }
 
 function doResize() {
-	resizeMaze(maze, getWidth(), getHeight());
+	maze.resize(getWidth(), getHeight());
 	pushCode();
 	tick();
 }
 function doRandom() {
-	maze = randomMaze(getWidth(), getHeight());
+	maze.random(getWidth(), getHeight());
 	pushCode();
 	tick();
 }
 
 function doMazeLoad(base64) {
-	maze = load(base64);
+	maze.fromBase64(base64);
 	width.value = maze.length;
 	height.value = maze[0].length;
 	tick();
