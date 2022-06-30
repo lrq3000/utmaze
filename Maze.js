@@ -21,7 +21,6 @@ class Maze extends Array {
 		// Initialize X,Y and pick random starting Y
 		let x = 0;
 		let y = randInt(this.height);
-		this[x][y] = TILE.PLAID;
 		this.startY = y;
 
 		while (true) {
@@ -107,6 +106,9 @@ class Maze extends Array {
 					break;
 			}
 		}
+
+		// Place starting tile (we do it at the end in case it was overwritten by the solution path)
+		this[0][this.startY] = TILE.PLAID;
 
 		return sPath;
 	}
