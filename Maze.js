@@ -28,10 +28,10 @@ class Maze extends Array {
 			let r = Math.random();
 			let x2 = x;
 			let y2 = y;
-			if (r < 0.4)            x2++;
-			else if (r < 0.65)      y2--;
-			else if (r < 0.9)       y2++;
-			else                    x2--;
+			if (r < 0.4)		x2++;
+			else if (r < 0.65)	y2--;
+			else if (r < 0.9)	y2++;
+			else			x2--;
 
 			// If too far up/left/down, go right instead.
 			// Set coords.
@@ -167,8 +167,12 @@ class Maze extends Array {
 			tileBuf = tileBuf.concat(this[x]);
 
 		// 6 bits per character base64-encoded, 3 bits per tile
-		for (let i=0; i<tileBuf.length; )
-			b64 += Maze.b64s.charAt((tileBuf[i++] << 3) | tileBuf[i++]);
+		// (and convert TILE.ELEC (9) to TILE.BLUE (5))
+		for (let i=0; i<tileBuf.length; i+=2)
+			b64 += Maze.b64s.charAt(
+				((tileBuf[i]==TILE.ELEC ? TILE.BLUE : tileBuf[i])-1 << 3)
+				| (tileBuf[i+1]==TILE.ELEC ? TILE.BLUE : tileBuf[i+1])-1
+			);
 
 		// Prepend maze height, return
 		return Maze.b64s.charAt(this.height-1) + b64;
@@ -176,7 +180,7 @@ class Maze extends Array {
 
 	static fromBase64(base64) {
 		let h = 1 + Maze.b64s.indexOf(base64.charAt(0));
-		let w = (base64.length - 1) * 2 / h;    // w*h=a, a/h=w
+		let w = (base64.length - 1) * 2 / h;	// w*h=a, a/h=w
 
 		let tileBuf = [];
 		for (let i=1; i<base64.length; i++) {
@@ -189,8 +193,9 @@ class Maze extends Array {
 		let i=0;
 		for (let x=0; x<w; x++)
 			for (let y=0; y<h; y++)
-				maze[x][y] = tileBuf[i++];
+				maze[x][y] = tileBuf[i++]+1;
 
 		maze.electrify();
+		return maze;
 	}
 }
