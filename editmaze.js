@@ -32,8 +32,8 @@ function doRandom() {
 
 function doMazeLoad(base64) {
 	maze = Maze.fromBase64(base64);
-	width.value = maze.length;
-	height.value = maze[0].length;
+	width.value = maze.width;
+	height.value = maze.height;
 	tick();
 }
 
