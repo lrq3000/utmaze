@@ -14,6 +14,28 @@ class Maze extends Array {
 		return (x>=0 && x<this.width && y>=0 && y<this.height);
 	}
 
+	floodFill(x,y,callback) {
+		/* `callback` should take parameters maze,x,y
+		 * and return a boolean, `true` to continue recursing, `false` to stop
+		 */
+
+		// Form closure with `callback` and `this` maze object
+		let maze = this;
+		function _floodFill(x,y) {
+			if (!maze.isInBounds(x,y))
+				return;
+
+			if (!callback(maze,x,y))
+				return;
+
+			_floodFill(x-1,y);
+			_floodFill(x+1,y);
+			_floodFill(x,y-1);
+			_floodFill(x,y+1);
+		}
+		_floodFill(x,y);
+	}
+
 	generateSolution() {
 		let sPath = [];	// Track solution path
 		let state = STATE.NEUTRAL;
@@ -135,48 +157,65 @@ class Maze extends Array {
 		 * whether we're allowed to place yellow tiles adjacent (for example).
 		 */
 
+		function _weightedRandomTile() {
+			return Math.min(1 + randInt(7) + randInt(2), 7);
+		}
+
+		// Fill rest of maze with random tiles
 		for (let x=0; x<this.width; x++) {
 			for (let y=0; y<this.height; y++) {
 				if (!this[x][y])
 					// Weighted with +0-2
-					this[x][y] = Math.min(1 + randInt(7) + randInt(2), 7);
+					this[x][y] = _weightedRandomTile();
 			}
 		}
+
+		// Electrify tiles
+		this.electrify();
+
+		// Un-electrify any tiles on the solution path (not the most efficient solution, but it's simpler than making `electrify()` double-check)
+		function _unelectrify(m,x,y) {
+			if (m[x][y] == TILE.ELEC) {
+				m[x][y] = TILE.BLUE;
+				return true;
+			}
+			else if (m[x][y] == TILE.YELLOW) {
+				let tile = _weightedRandomTile();
+				m[x][y] = (tile!=TILE.YELLOW ? tile : TILE.RED);
+				return false;
+			}
+			else return false;
+		}
+		for (let i=0; i<sPath.length; i++)
+			this.floodFill(sPath[i].x, sPath[i].y, _unelectrify);
 	}
 
 	static random(w,h) {
 		let maze = new Maze(w,h);
 
 		maze.fillRandom(maze.generateSolution());
-		maze.electrify();
 		return maze;
 	}
 
 	electrify() {
+		function _electrify(m,x,y) {
+			if (m[x][y] == TILE.BLUE) {
+				m[x][y] = TILE.ELEC;
+				return true;
+			}
+			else return false;
+		}
+
 		for (let x=0; x<this.width; x++) {
 			for (let y=0; y<this.height; y++) {
 				if (this[x][y] == TILE.YELLOW) {
-					this.#electrify(x-1,y);
-					this.#electrify(x+1,y);
-					this.#electrify(x,y-1);
-					this.#electrify(x,y+1);
+					this.floodFill(x-1, y, _electrify);
+					this.floodFill(x+1, y, _electrify);
+					this.floodFill(x, y-1, _electrify);
+					this.floodFill(x, y+1, _electrify);
 				}
 			}
 		}
-	}
-	#electrify(x,y) {
-		// Escape if out of bounds
-		if (!this.isInBounds(x,y))
-			return;
-
-		if (this[x][y] != TILE.BLUE)
-			return;
-
-		this[x][y] = TILE.ELEC;
-		this.#electrify(x-1,y);
-		this.#electrify(x+1,y);
-		this.#electrify(x,y-1);
-		this.#electrify(x,y+1);
 	}
 
 	resize(w2,h2) {
