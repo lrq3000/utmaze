@@ -10,6 +10,10 @@ class Maze extends Array {
 		this.par = 0;
 	}
 
+	isInBounds(x,y) {
+		return (x>=0 && x<this.width && y>=0 && y<this.height);
+	}
+
 	generateSolution() {
 		let sPath = [];	// Track solution path
 		let state = STATE.NEUTRAL;
@@ -22,7 +26,7 @@ class Maze extends Array {
 
 		while (true) {
 			// Record tile on solution path
-			sPath.push([x,y]);
+			sPath.push({x:x,y:y});
 
 			// Select next tile
 			let r = Math.random();
@@ -33,9 +37,27 @@ class Maze extends Array {
 			else if (r < 0.9)	y2++;
 			else			x2--;
 
-			// If too far up/left/down, go right instead.
+			// If we turned a corner on a purple tile,
+			// put red tile across (to guarantee solvability).
+			if (this[x][y] == TILE.PURPLE) {
+				let x1 = sPath.at(-2).x;
+				let y1 = sPath.at(-2).y;
+				let dx = x2 - x1;
+				let dy = y2 - y1;
+
+				// Corner tile
+				// (Vectors -- if either delta X or delta Y are zero (falsy), we didn't turn)
+				if (dx && dy) {
+					let x3 = 2*x-x1;
+					let y3 = 2*y-y1;
+					if (this.isInBounds(x3,y3))
+						this[x3][y3] = TILE.RED;
+				}
+			}
+
+			// If headed out of bounds, go right instead.
 			// Set coords.
-			if (x2 <= 0 || y2 < 0 || y2 >= this.height)
+			if (!this.isInBounds(x2,y2))
 				x++;
 			else {
 				x = x2;
@@ -44,7 +66,7 @@ class Maze extends Array {
 
 			// If coords were set too far right, go back and place finish tile instead.
 			if (x >= this.width) {
-				this[--x][y] = TILE.PLAID;
+				this[this.width-1][y] = TILE.PLAID;
 				this.endY = y;
 				break;
 			}
@@ -67,6 +89,25 @@ class Maze extends Array {
 			}
 		}
 
+		// Sanity check for rare case where solution path intersects with self and becomes unsolvable
+		state = STATE.NEUTRAL;
+		for (let i=0; i<sPath.length; i++) {
+			let x = sPath[i].x;
+			let y = sPath[i].y;
+			switch (this[x][y]) {
+				case TILE.ORANGE:
+					state = STATE.ORANGES;
+					break;
+				case TILE.PURPLE:
+					state = STATE.LEMONS;
+					break;
+				case TILE.BLUE:
+					if (state == STATE.ORANGES)
+						this[x][y] = TILE.PINK;
+					break;
+			}
+		}
+
 		return sPath;
 	}
 
@@ -78,7 +119,7 @@ class Maze extends Array {
 			for (let x=0; x<this.width; x++) {
 				for (let y=0; y<this.height; y++) {
 					if (this[x][y])
-						sPath.push([x,y]);
+						sPath.push({x:x,y:y});
 				}
 			}
 		}
@@ -123,7 +164,7 @@ class Maze extends Array {
 	}
 	#electrify(x,y) {
 		// Escape if out of bounds
-		if (x<0 || x>=this.width || y<0 || y>=this.height)
+		if (!this.isInBounds(x,y))
 			return;
 
 		if (this[x][y] != TILE.BLUE)
