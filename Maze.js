@@ -182,7 +182,7 @@ class Maze extends Array {
 			else if (m[x][y] == TILE.YELLOW) {
 				let tile = _weightedRandomTile();
 				m[x][y] = (tile!=TILE.YELLOW ? tile : TILE.RED);
-				return false;
+				return true;
 			}
 			else return false;
 		}
