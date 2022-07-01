@@ -19,6 +19,7 @@
 			p = new Player(m);
 		drawMaze(m);
 		drawPlayer(p);
+		drawState(p.state, p.score);
 	});
 
 	drawMaze(m);
@@ -34,6 +35,7 @@
 	</style>
 </head>
 <body>
+	<canvas width="495" height="126" id="statusbar">Error displaying status bar!</canvas>
 	<canvas width="1280" height="720" id="canvas">Error displaying canvas!</canvas>
 	<p style="font-family: 'UTPapyrus'">
 		EACH COLOR HAS A DIFFERENT FUNCTION!<br>
