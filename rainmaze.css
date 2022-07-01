@@ -28,7 +28,7 @@ canvas {
 
 .overlay {
 	position: fixed;
-	left: 32%;
+	left: 31%;
 	display: none;
 	z-index: 3;
 }
