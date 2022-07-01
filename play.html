@@ -22,22 +22,22 @@
 		drawState(p.state, p.score);
 	});
 
-	drawMaze(m);
-	drawPlayer(p);
+	window.addEventListener('load', e => {
+		let btn_rules = document.getElementById('btn_rules');
+		let rules = document.getElementById('rules');
+		btn_rules.addEventListener('mouseover', e => rules.style.display = 'block' );
+		btn_rules.addEventListener('mouseleave', e => rules.style.display = 'none' );
+
+		drawMaze(m);
+		drawPlayer(p);
+		drawState(p.state, p.score);
+		drawTimer();
+	});
 	</script>
-	<link rel="stylesheet" href="fonts.css">
-	<style>
-	canvas {
-		padding: 0;
-		margin: auto;
-		display: block;
-	}
-	</style>
+	<link rel="stylesheet" href="rainmaze.css">
 </head>
 <body>
-	<canvas width="495" height="126" id="statusbar">Error displaying status bar!</canvas>
-	<canvas width="1280" height="720" id="canvas">Error displaying canvas!</canvas>
-	<p style="font-family: 'UTPapyrus'">
+	<div class="overlay" id="rules">
 		EACH COLOR HAS A DIFFERENT FUNCTION!<br>
 		RED TILES ARE IMPASSABLE!<br>
 		YOU CANNOT WALK ON THEM!<br>
@@ -65,5 +65,12 @@
 		FINALLY, PINK TILES.<br>
 		THEY DON'T DO ANYTHING.<br>
 		STEP ON THEM ALL YOU LIKE.<br>
+	</div>
+	<div>
+		<button type="button" id="btn_rules">RULES</button>
+		<canvas width="495" height="126" id="statusbar">Error displaying status bar!</canvas>
+	</div>
+	<canvas width="1280" height="720" id="canvas">Error displaying canvas!</canvas>
+	<p style="font-family: 'UTPapyrus'">
 	</p>
 </body>

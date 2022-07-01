@@ -1,0 +1,54 @@
+@font-face {
+	font-family: 'UTPapyrus';
+	src: url('fonts/UndertalePapyrus.ttf');
+}
+@font-face {
+	font-family: 'UTSans';
+	src: url('fonts/UndertaleSans.ttf');
+}
+@font-face {
+	font-family: 'UTDetermination';
+	src: url('fonts/DeterminationMonoWeb.ttf');
+}
+@font-face {
+	font-family: 'UTMercy';
+	src: url('fonts/MERCY.ttf');
+}
+
+html {
+	background-color: #333348;
+}
+
+canvas {
+	padding: 0;
+	margin: auto;
+	display: block;
+}
+
+
+.overlay {
+	position: fixed;
+	left: 32%;
+	display: none;
+	z-index: 3;
+}
+
+button, #rules {
+	background-color: black;
+	color: white;
+}
+button {
+	display: inline-block;
+	border: 2px solid #FF7E10;
+	bottom: 0;
+	text-align: center;
+	color: #FF7E10;
+	font-size: 1em;
+	font-family: 'UTMercy';
+}
+#rules {
+	padding: 1em;
+	border: 4px solid white;
+	text-align: left;
+	font-family: 'UTPapyrus';
+}
