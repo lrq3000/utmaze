@@ -6,7 +6,7 @@
 	<script src="Player.js"></script>
 	<script src="Draw.js"></script>
 	<script defer>
-	var m = Maze.random(8,6);
+	var m = Maze.random(32,18);
 
 	var p = new Player(m);
 
@@ -24,6 +24,7 @@
 	drawMaze(m);
 	drawPlayer(p);
 	</script>
+	<link rel="stylesheet" href="fonts.css">
 	<style>
 	canvas {
 		padding: 0;
@@ -34,4 +35,33 @@
 </head>
 <body>
 	<canvas width="1280" height="720" id="canvas">Error displaying canvas!</canvas>
+	<p style="font-family: 'UTPapyrus'">
+		EACH COLOR HAS A DIFFERENT FUNCTION!<br>
+		RED TILES ARE IMPASSABLE!<br>
+		YOU CANNOT WALK ON THEM!<br>
+		YELLOW TILES ARE ELECTRIC!<br>
+		THEY WILL ELECTROCUTE YOU!<br>
+		GREEN TILES ARE ALARM TILES!<br>
+		IF YOU STEP ON THEM...<br>
+		<del>YOU WILL HAVE TO FIGHT A MONSTER!</del><br>
+		A STROKE WILL BE ADDED TO YOUR SCORE.<br>
+		LIKE GOLF!<br>
+		ORANGE TILES ARE ORANGE-SCENTED.<br>
+		THEY WILL MAKE YOU SMELL DELICIOUS!<br>
+		BLUE TILES ARE WATER TILES.<br>
+		SWIM THROUGH IF YOU LIKE, BUT...<br>
+		IF YOU SMELL LIKE ORANGES!<br>
+		THE PIRAHNAS WILL BITE YOU.<br>
+		ALSO, IF A BLUE TILE IS NEXT TO A YELLOW TILE,<br>
+		THE WATER WILL ALSO ZAP YOU!<br>
+		PURPLE TILES ARE SLIPPERY!<br>
+		YOU WILL SLIDE TO THE NEXT TILE!<br>
+		HOWEVER, THE SLIPPERY SOAP...<br>
+		SMELLS LIKE LEMONS!!<br>
+		WHICH PIRAHNAS DO NOT LIKE!<br>
+		PURPLE AND BLUE ARE OK!<br>
+		FINALLY, PINK TILES.<br>
+		THEY DON'T DO ANYTHING.<br>
+		STEP ON THEM ALL YOU LIKE.<br>
+	</p>
 </body>
