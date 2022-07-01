@@ -1,0 +1,12 @@
+@font-face {
+	font-family: 'UTPapyrus';
+	src: url('fonts/UndertalePapyrus.ttf');
+}
+@font-face {
+	font-family: 'UTSans';
+	src: url('fonts/UndertaleSans.ttf');
+}
+@font-face {
+	font-family: 'UTDetermination';
+	src: url('fonts/DeterminationMonoWeb.ttf');
+}
