@@ -1,45 +1,19 @@
 <!DOCTYPE html>
 <head>
+	<title>Rainmaze</title>
+	<meta charset="UTF-8">
+	<meta name="description" content="Rainbow Tile Maze">
+	<meta name="keywords" content="tile maze, tile puzzle, color tiles, rainbow tiles, undertale, mettaton, papyrus">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Rainbow Tile Maze">
+	<meta property="og:description" content="Undertale Tile Maze online - player, editor, random generator.">
+	<meta property="og:image" content="ico.png">
 	<link rel="icon" href="ico.png">
 	<script src="defs.js"></script>
 	<script src="Maze.js"></script>
 	<script src="Player.js"></script>
 	<script src="Draw.js"></script>
-	<script defer>
-	var m = Maze.random(32,20);
-
-	var p = new Player(m);
-
-	document.addEventListener('keydown', e => {
-		if (e.key.includes('Arrow')) {
-			e.preventDefault();
-			p.move(VEC[e.key.substring(5).toUpperCase()]);
-		}
-		else if (e.key == 'r')
-			p = new Player(m);
-
-		// Player wins!
-		if (m[p.x][p.y] == TILE.PLAID && p.x != 0) {
-			stopTimer();
-		}
-
-		drawMaze(m);
-		drawPlayer(p);
-		drawState(p.state, p.score);
-	});
-
-	window.addEventListener('load', e => {
-		let btn_rules = document.getElementById('btn_rules');
-		let rules = document.getElementById('rules');
-		btn_rules.addEventListener('mouseover', e => rules.style.display = 'block' );
-		btn_rules.addEventListener('mouseleave', e => rules.style.display = 'none' );
-
-		drawMaze(m);
-		drawPlayer(p);
-		drawState(p.state, p.score);
-		drawTimer();
-	});
-	</script>
+	<script src="play.js" defer></script>
 	<link rel="stylesheet" href="rainmaze.css">
 </head>
 <body>
@@ -72,11 +46,29 @@
 		THEY DON'T DO ANYTHING.<br>
 		STEP ON THEM ALL YOU LIKE.<br>
 	</div>
-	<div>
-		<button type="button" id="btn_rules">RULES</button>
-		<canvas width="495" height="126" id="statusbar">Error displaying status bar!</canvas>
-	</div>
-	<canvas width="1" height="1" id="canvas">Error displaying canvas!</canvas>
-	<p style="font-family: 'UTPapyrus'">
-	</p>
+	<header>
+		<div style="text-align:right">
+			<button type="button" id="btn_rules">RULES</button>
+			<button type="button" onclick="openEditor()">EDIT</button>
+			<hr>
+			<button type="button" onclick="width.value=8;height.value=6;">default</button>
+			<button type="button" onclick="width.value=32;height.value=4;">classic</button>
+			<button type="button" onclick="width.value=24;height.value=24;">square</button>
+			<button type="button" onclick="width.value=75;height.value=25;">long</button>
+			<button type="button" onclick="width.value=128;height.value=64;">huge</button>
+			<br>
+			W:<input type="number" id="w" value="8" min="2">
+			H:<input type="number" id="h" value="6" min="1" max="64">
+			<button type="button" id="new" onclick="openNewMaze()">NEW</button>
+		</div>
+		<div>
+			<canvas width="495" height="126" id="statusbar">Error displaying status bar!</canvas>
+		</div>
+	</header>
+	<main>
+		<canvas style="padding:0; margin:auto; display:block;" width="1" height="1" id="canvas">Error displaying canvas!</canvas>
+	</main>
+	<footer>
+
+	</footer>
 </body>
