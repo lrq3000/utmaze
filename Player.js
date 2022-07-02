@@ -89,8 +89,10 @@ class Player {
 			case TILE.PLAID:
 				this.x = x2;
 				this.y = y2;
-				if (this.x != 0)
+				if (this.x != 0) {
 					snd_victory.play();
+					this.state = STATE.VICTORY;
+				}
 				break;
 
 			case TILE.NONE:

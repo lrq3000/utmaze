@@ -14,7 +14,8 @@ const COLOR = ['Black','#FEBFC0','#FFC049','#C000C0','#9BFF78','#4040FF','#FFFF8
 const STATE = {
 	NEUTRAL:0,
 	ORANGES:1,
-	LEMONS: 2
+	LEMONS: 2,
+	VICTORY:3
 }
 
 function randInt(n) { return Math.floor(Math.random() * n); }
