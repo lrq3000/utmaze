@@ -6,6 +6,23 @@ const VEC = {
 	reverse: vec => ({x:-1*vec.x, y:-1*vec.y})
 };
 
+class Aud extends Audio {
+	play() {
+		this.currentTime = 0;
+		super.play();
+	}
+}
+
+const snd_flavor = new Aud('sounds/snd_bell.wav');
+snd_flavor.volume = 0.9;
+const snd_pirahnas = new Aud('sounds/snd_b.wav');
+snd_pirahnas.volume = 0.9;
+const snd_green = new Aud('sounds/snd_yeah.wav');
+snd_green.volume = 0.4;
+const snd_shock = new Aud('sounds/snd_shock.wav');
+snd_shock.volume = 0.5;
+const snd_victory = new Aud('sounds/snd_dumbvictory.wav');
+
 class Player {
 	constructor(maze) {
 		this.maze = maze;
@@ -24,14 +41,17 @@ class Player {
 
 		switch (this.maze[x2][y2]) {
 			case TILE.ORANGE:
+				if (this.state != STATE.ORANGES)
+					snd_flavor.play();
 				this.state = STATE.ORANGES;
 			case TILE.PINK:
-			case TILE.PLAID:
 				this.x = x2;
 				this.y = y2;
 				break;
 
 			case TILE.PURPLE:
+				if (this.state != STATE.LEMONS)
+					snd_flavor.play();
 				this.state = STATE.LEMONS;
 				this.x = x2;
 				this.y = y2;
@@ -42,6 +62,7 @@ class Player {
 				this.score++;
 				this.x = x2;
 				this.y = y2;
+				snd_green.play();
 				break;
 
 			case TILE.BLUE:
@@ -50,11 +71,26 @@ class Player {
 					this.y = y2;
 					break;
 				}
+				else {
+					this.x = x2;
+					this.y = y2;
+					snd_pirahnas.play();
+					this.move(VEC.reverse(vec));
+					break;
+				}
 			case TILE.YELLOW:
 			case TILE.ELEC:
 				this.x = x2;
 				this.y = y2;
+				snd_shock.play();
 				this.move(VEC.reverse(vec));
+				break;
+
+			case TILE.PLAID:
+				this.x = x2;
+				this.y = y2;
+				if (this.x != 0)
+					snd_victory.play();
 				break;
 
 			case TILE.NONE:
