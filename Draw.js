@@ -1,4 +1,4 @@
-const b = 40;	// Breadth of tile (Size in px)
+let b = 40;	// Breadth of tile (Size in px)
 
 class Img extends Image {	// Because I'm sick of defining the `src` on a second line
 	constructor(src) {
@@ -92,6 +92,7 @@ function drawState(flavor,score) {
 }
 
 let time;
+let interval;
 function drawTimer() {
 	let delta = Date.now() - time;
 
@@ -117,6 +118,11 @@ function drawTimer() {
 
 function resetTimer() {
 	time = Date.now();
+	interval = setInterval(drawTimer, 50);
+}
+
+function stopTimer() {
+	clearInterval(interval);
 }
 
 window.addEventListener('load', e => {
@@ -128,5 +134,4 @@ window.addEventListener('load', e => {
 	cx2.scale(3,3);
 
 	resetTimer();
-	let interval = setInterval(drawTimer, 50);
 });
