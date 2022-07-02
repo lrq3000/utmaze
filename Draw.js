@@ -1,4 +1,4 @@
-let b = 40;	// Breadth of tile (Size in px)
+const b = 40;	// Breadth of tile (Size in px)
 
 class Img extends Image {	// Because I'm sick of defining the `src` on a second line
 	constructor(src) {
@@ -7,13 +7,22 @@ class Img extends Image {	// Because I'm sick of defining the `src` on a second 
 	}
 }
 
+const maxW = 1280;
+const maxH = 720;
 const plaid = new Img('graphics/plaid.png');
 let cx1;
 function drawMaze(maze) {
 	cx1.clearRect(0,0,canvas.width,canvas.height);
 
-	for (let x=0; x<maze.length; x++) {
-		for (let y=0; y<maze[0].length; y++) {
+	let w = b * maze.width;
+	let h = b * maze.height;
+	let s = Math.min(maxW / w, maxH / h, 1);
+	canvas.width = w*s;
+	canvas.height = h*s;
+	cx1.scale(s,s);
+
+	for (let x=0; x<maze.width; x++) {
+		for (let y=0; y<maze.height; y++) {
 			let tile = maze[x][y];
 			if (tile == TILE.PLAID)
 				cx1.drawImage(plaid,b*x,b*y,b,b);
