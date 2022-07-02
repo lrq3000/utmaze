@@ -39,6 +39,7 @@ class Maze extends Array {
 	generateSolution() {
 		let sPath = [];	// Track solution path
 		let state = STATE.NEUTRAL;
+		let sinOffset = Math.random(5);
 
 		// Initialize X,Y and pick random starting Y
 		let x = 0;
@@ -50,13 +51,15 @@ class Maze extends Array {
 			sPath.push({x:x,y:y});
 
 			// Select next tile
-			let r = Math.random();
+			// Use `Math.sin()` to promote wavier paths over straight paths
+			// and `sinOffset` so that the waves aren't samey from maze to maze
+			let r = Math.sin(x + Math.random(2)-1 + sinOffset);
 			let x2 = x;
 			let y2 = y;
-			if (r < 0.4)		x2++;
-			else if (r < 0.65)	y2--;
-			else if (r < 0.9)	y2++;
-			else			x2--;
+			if (r < -0.8)			y2--;
+			else if (r > 0.8)		y2++;
+			else if (r > -0.2 && r < 0.2)	x2--;
+			else				x2++;
 
 			// If we turned a corner on a purple tile,
 			// put red tile across (to guarantee solvability).
