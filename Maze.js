@@ -138,7 +138,22 @@ class Maze extends Array {
 		return sPath;
 	}
 
-	/* Fill empty spaces outside the solution path with random tiles */
+	static #weightedRandomTile() { return Math.min(1 + randInt(7) + randInt(2), 7); }
+
+	fillPureRandom() {
+		for (let x=0; x<this.width; x++) {
+			for (let y=0; y<this.height; y++) {
+				if (!this[x][y])
+					// Weighted with +0-2
+					this[x][y] = Maze.#weightedRandomTile();
+			}
+		}
+
+		// Electrify tiles
+		this.electrify();
+	}
+
+	/* Fill empty spaces outside the solution path with semi-random tiles while maintaining solvability */
 	fillRandom(sPath) {
 		// If no pregenerated sPath was provided, build one
 		if (!sPath) {
@@ -160,21 +175,8 @@ class Maze extends Array {
 		 * whether we're allowed to place yellow tiles adjacent (for example).
 		 */
 
-		function _weightedRandomTile() {
-			return Math.min(1 + randInt(7) + randInt(2), 7);
-		}
-
 		// Fill rest of maze with random tiles
-		for (let x=0; x<this.width; x++) {
-			for (let y=0; y<this.height; y++) {
-				if (!this[x][y])
-					// Weighted with +0-2
-					this[x][y] = _weightedRandomTile();
-			}
-		}
-
-		// Electrify tiles
-		this.electrify();
+		this.fillPureRandom();
 
 		// Un-electrify any tiles on the solution path (not the most efficient solution, but it's simpler than making `electrify()` double-check)
 		function _unelectrify(m,x,y) {
@@ -183,7 +185,7 @@ class Maze extends Array {
 				return true;
 			}
 			else if (m[x][y] == TILE.YELLOW) {
-				let tile = _weightedRandomTile();
+				let tile = Maze.#weightedRandomTile();
 				m[x][y] = (tile!=TILE.YELLOW ? tile : TILE.RED);
 				return true;
 			}
@@ -265,7 +267,7 @@ class Maze extends Array {
 
 	static fromBase64(base64) {
 		let h = 1 + Maze.b64s.indexOf(base64.charAt(0));
-		let w = (base64.length - 1) * 2 / h;	// w*h=a, a/h=w
+		let w = Math.floor((base64.length - 1) * 2 / h);	// w*h=a, a/h=w
 
 		let tileBuf = [];
 		for (let i=1; i<base64.length; i++) {
@@ -279,6 +281,14 @@ class Maze extends Array {
 		for (let x=0; x<w; x++)
 			for (let y=0; y<h; y++)
 				maze[x][y] = tileBuf[i++]+1;
+
+		// Specify starting position
+		for (let y=0; y<maze.height; y++) {
+			if (maze[0][y] == TILE.PLAID) {
+				maze.startY = y;
+				break;
+			}
+		}
 
 		maze.electrify();
 		return maze;
