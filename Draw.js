@@ -49,6 +49,7 @@ let cx2;
 const flavorless= new Img('graphics/flavor_none.png');
 const lemons	= new Img('graphics/flavor_lemons.png');
 const oranges	= new Img('graphics/flavor_oranges.png');
+const victory	= new Img('graphics/flavor_victory.png');
 const scoreboard= new Img('graphics/score_ut.png');
 const sucks	= new Img('graphics/timer_sucks.png');
 const dog	= new Img('graphics/dog.png');
@@ -80,6 +81,10 @@ function drawState(flavor,score) {
 
 		case STATE.LEMONS:
 			flavorboard = lemons;
+			break;
+
+		case STATE.VICTORY:
+			flavorboard = victory;
 			break;
 	}
 	cx2.drawImage(flavorboard,0,0);
@@ -136,11 +141,14 @@ function stopTimer() {
 
 window.addEventListener('load', e => {
 	cx1 = document.getElementById('canvas').getContext('2d');
-	cx2 = document.getElementById('statusbar').getContext('2d');
-	cx2.webkitImageSmoothingEnabled = false;
-	cx2.mozImageSmoothingEnabled = false;
-	cx2.imageSmoothingEnabled = false;
-	cx2.scale(3,3);
+	let sbar = document.getElementById('statusbar');
+	if (sbar) {
+		cx2 = sbar.getContext('2d');
+		cx2.webkitImageSmoothingEnabled = false;
+		cx2.mozImageSmoothingEnabled = false;
+		cx2.imageSmoothingEnabled = false;
+		cx2.scale(3,3);
 
-	resetTimer();
+		resetTimer();
+	}
 });
