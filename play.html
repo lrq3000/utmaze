@@ -17,6 +17,12 @@
 		}
 		else if (e.key == 'r')
 			p = new Player(m);
+
+		// Player wins!
+		if (m[p.x][p.y] == TILE.PLAID && p.x != 0) {
+			stopTimer();
+		}
+
 		drawMaze(m);
 		drawPlayer(p);
 		drawState(p.state, p.score);
