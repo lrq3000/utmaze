@@ -19,8 +19,26 @@ function pushCode() {
 function getWidth()	{ return Number(width.value) }
 function getHeight()	{ return Number(height.value) }
 
+function doReset() {
+	maze = new Maze(getWidth(), getHeight());
+	tick();
+}
 function doResize() {
 	maze.resize(getWidth(), getHeight());
+	pushCode();
+	tick();
+}
+
+function doSolution() {
+	maze.generateSolution();
+	pushCode();
+	tick();
+}
+function doRandomFill(pure) {
+	if (pure)
+		maze.fillPureRandom();
+	else
+		maze.fillRandom();
 	pushCode();
 	tick();
 }
@@ -30,11 +48,16 @@ function doRandom() {
 	tick();
 }
 
+
 function doMazeLoad(base64) {
 	maze = Maze.fromBase64(base64);
 	width.value = maze.width;
 	height.value = maze.height;
 	tick();
+}
+
+function openGame() {
+	window.location = 'play.html?code=' + new URLSearchParams(window.location.search).get('code');
 }
 
 function paintTile(e) {
@@ -59,8 +82,10 @@ canvas.addEventListener('mouseup', e => {
 document.addEventListener('keydown', e => { if (!isNaN(e.key)) brush = parseInt(e.key) });
 document.addEventListener('popstate', e => {
 	doMazeLoad(new URLSearchParams(window.location.search).get('code'));
+	tick();
 });
 
-doMazeLoad(new URLSearchParams(window.location.search).get('code'));
-
-tick();
+window.addEventListener('load', e => {
+	doMazeLoad(new URLSearchParams(window.location.search).get('code'));
+	tick()
+});
