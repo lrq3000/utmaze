@@ -73,3 +73,10 @@ input[type=number] { width: 3em; }
 	text-align: left;
 	font-family: 'UTPapyrus';
 }
+
+a:link {
+	color: yellow;
+}
+a:visited {
+	color: green;
+}
