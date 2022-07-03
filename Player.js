@@ -90,6 +90,7 @@ class Player {
 				this.x = x2;
 				this.y = y2;
 				if (this.x != 0) {
+					stopTimer();	// Draw.js
 					snd_victory.play();
 					this.state = STATE.VICTORY;
 				}
