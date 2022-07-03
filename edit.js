@@ -62,8 +62,8 @@ function openGame() {
 
 function paintTile(e) {
 	rect = canvas.getBoundingClientRect();
-	let x = Math.floor((e.clientX - rect.left) / b);
-	let y = Math.floor((e.clientY - rect.top) / b)
+	let x = Math.floor((e.clientX - rect.left) / b / scale);	// var `scale` taken from Draw.js
+	let y = Math.floor((e.clientY - rect.top) / b / scale)
 	if (x>=0 && x<getWidth() && y>=0 && y<getHeight())
 		maze[x][y] = brush;
 	tick();

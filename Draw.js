@@ -11,15 +11,16 @@ const maxW = 1280;
 const maxH = 720;
 const plaid = new Img('graphics/plaid.png');
 let cx1;
+var scale = 1;
 function drawMaze(maze) {
 	cx1.clearRect(0,0,canvas.width,canvas.height);
 
 	let w = b * maze.width;
 	let h = b * maze.height;
-	let s = Math.min(maxW / w, maxH / h, 1);
-	canvas.width = w*s;
-	canvas.height = h*s;
-	cx1.scale(s,s);
+	scale = Math.min(maxW / w, maxH / h, 1);
+	canvas.width = w*scale;
+	canvas.height = h*scale;
+	cx1.scale(scale,scale);
 
 	for (let x=0; x<maze.width; x++) {
 		for (let y=0; y<maze.height; y++) {
