@@ -7,17 +7,17 @@ class Img extends Image {	// Because I'm sick of defining the `src` on a second 
 	}
 }
 
-const maxW = 1280;
-const maxH = 720;
+var scale = 1;
 const plaid = new Img('graphics/plaid.png');
 let cx1;
-var scale = 1;
 function drawMaze(maze) {
 	cx1.clearRect(0,0,canvas.width,canvas.height);
 
 	let w = b * maze.width;
 	let h = b * maze.height;
-	scale = Math.min(maxW / w, maxH / h, 1);
+	let marginHeight = document.getElementsByTagName('header')[0].offsetHeight + document.getElementsByTagName('footer')[0].offsetHeight;
+	// Magic numbers '16' and '48' are rough margins which are nigh-impossible to get with pure JS
+	scale = Math.min((window.innerWidth - 16) / w, (window.innerHeight - marginHeight - 48) / h, 1);
 	canvas.width = w*scale;
 	canvas.height = h*scale;
 	cx1.scale(scale,scale);
