@@ -15,6 +15,14 @@ height.value = m.height;
 
 var p = new Player(m);
 
+
+function tick() {
+	drawMaze(m);
+	drawPlayer(p);
+	drawState(p.state, p.score);
+}
+
+
 function openNewMaze() {
 	window.location = 'play.html?w=' + width.value + '&h=' + height.value;
 }
@@ -30,15 +38,11 @@ function move(direction) {
 		resetTimer();
 	}
 
-	drawMaze(m);
-	drawPlayer(p);
-	drawState(p.state, p.score);
+	tick();
 }
 function reset() {
 	p = new Player(m);
-	drawMaze(m);
-	drawPlayer(p);
-	drawState(p.state, p.score);
+	tick();
 }
 document.addEventListener('keydown', e => {
 	if (e.key.includes('Arrow')) {
@@ -53,15 +57,18 @@ document.addEventListener('swiped', e => {
 	move(e.detail.dir.toUpperCase());
 });
 
+
+window.addEventListener('resize', e => {
+	tick();
+});
+
 window.addEventListener('load', e => {
 	let btn_rules = document.getElementById('btn_rules');
 	let rules = document.getElementById('rules');
 	btn_rules.addEventListener('mouseover', e => rules.style.display = 'block' );
 	btn_rules.addEventListener('mouseleave', e => rules.style.display = 'none' );
 
-	drawMaze(m);
-	drawPlayer(p);
-	drawState(p.state, p.score);
+	tick();
 	drawTimer();
 	stopTimer();
 });
