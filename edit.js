@@ -5,6 +5,7 @@ var canvas = document.getElementById('canvas');
 var width = document.getElementById('width');
 var height = document.getElementById('height');
 
+let rect = canvas.getBoundingClientRect();
 
 
 function tick() {
@@ -60,7 +61,7 @@ function openGame() {
 }
 
 function paintTile(e) {
-	let rect = canvas.getBoundingClientRect();
+	rect = canvas.getBoundingClientRect();
 	let x = Math.floor((e.clientX - rect.left) / b);
 	let y = Math.floor((e.clientY - rect.top) / b)
 	if (x>=0 && x<getWidth() && y>=0 && y<getHeight())
