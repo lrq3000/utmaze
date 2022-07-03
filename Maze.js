@@ -51,32 +51,23 @@ class Maze extends Array {
 			sPath.push({x:x,y:y});
 
 			// Select next tile
-			// Use `Math.sin()` to promote wavier paths over straight paths
-			// and `sinOffset` so that the waves aren't samey from maze to maze
-			let r = Math.sin(x + Math.random(2)-1 + sinOffset);
 			let x2 = x;
 			let y2 = y;
-			if (r < -0.8)			y2--;
-			else if (r > 0.8)		y2++;
-			else if (r > -0.2 && r < 0.2)	x2--;
-			else				x2++;
-
-			// If we turned a corner on a purple tile,
-			// put red tile across (to guarantee solvability).
 			if (this[x][y] == TILE.PURPLE) {
-				let x1 = sPath.at(-2).x;
-				let y1 = sPath.at(-2).y;
-				let dx = x2 - x1;
-				let dy = y2 - y1;
-
-				// Corner tile
-				// (Vectors -- if either delta X or delta Y are zero (falsy), we didn't turn)
-				if (dx && dy) {
-					let x3 = 2*x-x1;
-					let y3 = 2*y-y1;
-					if (this.isInBounds(x3,y3))
-						this[x3][y3] = TILE.RED;
-				}
+				// Solution path must not turn on purple tiles,
+				// otherwise we risk unsolvability
+				let prev = sPath.at(-2);
+				x2 += x - prev.x;
+				y2 += y - prev.y;
+			}
+			else {
+				// Use `Math.sin()` to promote wavier paths over straight paths
+				// and `sinOffset` so that the waves aren't samey from maze to maze
+				let r = Math.sin(x + Math.random(2)-1 + sinOffset);
+				if (r < -0.8)			y2--;
+				else if (r > 0.8)		y2++;
+				else if (r > -0.2 && r < 0.2)	x2--;
+				else				x2++;
 			}
 
 			// If headed out of bounds, go right instead.
