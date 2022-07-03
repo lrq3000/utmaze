@@ -50,27 +50,32 @@
 	</style>
 </head>
 <body>
-	<p>
-		Size:
-		W:<input type="number" id="width" value="8" min="1" onchange="doResize()">
-		H:<input type="number" id="height" value="4" min="1" max="64" onchange="doResize()">
-		<button type="button" onclick="doReset()">Fill Black</button>
-		<button type="button" onclick="doSolution()">Make Solution Path</button>
-		<button type="button" onclick="doRandomFill(true)">Randomize Empty Space</button>
-		<button type="button" onclick="doRandom()">Randomize Maze</button>
-		<button type="button" id="play" onclick="openGame()">PLAY</button>
-	</p>
-	<p id="cbtns">
-		<button type="button" id="c1" onclick="brush=1"></button>
-		<button type="button" id="c2" onclick="brush=2"></button>
-		<button type="button" id="c3" onclick="brush=3"></button>
-		<button type="button" id="c4" onclick="brush=4"></button>
-		<button type="button" id="c5" onclick="brush=5"></button>
-		<button type="button" id="c6" onclick="brush=6"></button>
-		<button type="button" id="c7" onclick="brush=7"></button>
-		<button type="button" id="c8" onclick="brush=8"></button>
-		<button type="button" id="c0" onclick="brush=0"></button>
-		You can also select color with number keys 0-8!
-	</p>
-	<canvas width="1" height="1" id="canvas">Error displaying canvas!</canvas>
+	<header>
+		<p>
+			Size:
+			W:<input type="number" id="width" value="8" min="1" onchange="doResize()">
+			H:<input type="number" id="height" value="4" min="1" max="64" onchange="doResize()">
+			<button type="button" onclick="doReset()">Fill Black</button>
+			<button type="button" onclick="doSolution()">Make Solution Path</button>
+			<button type="button" onclick="doRandomFill(true)">Randomize Empty Space</button>
+			<button type="button" onclick="doRandom()">Randomize Maze</button>
+			<button type="button" id="play" onclick="openGame()">PLAY</button>
+		</p>
+		<p id="cbtns">
+			<button type="button" id="c1" onclick="brush=1"></button>
+			<button type="button" id="c2" onclick="brush=2"></button>
+			<button type="button" id="c3" onclick="brush=3"></button>
+			<button type="button" id="c4" onclick="brush=4"></button>
+			<button type="button" id="c5" onclick="brush=5"></button>
+			<button type="button" id="c6" onclick="brush=6"></button>
+			<button type="button" id="c7" onclick="brush=7"></button>
+			<button type="button" id="c8" onclick="brush=8"></button>
+			<button type="button" id="c0" onclick="brush=0"></button>
+			You can also select color with number keys 0-8!
+		</p>
+	</header>
+	<main>
+		<canvas width="1" height="1" id="canvas">Error displaying canvas!</canvas>
+	</main>
+	<footer></footer>
 </body>
