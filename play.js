@@ -23,26 +23,28 @@ function openEditor() {
 }
 
 let begun = false;
-document.addEventListener('keydown', e => {
-	if (e.key.includes('Arrow')) {
-		e.preventDefault();
-		p.move(VEC[e.key.substring(5).toUpperCase()]);
-		if (!begun) {
-			begun = true;
-			resetTimer();
-		}
-	}
-	else if (e.key == 'r')
-		p = new Player(m);
-
-	// Player wins!
-	if (m[p.x][p.y] == TILE.PLAID && p.x != 0) {
-		stopTimer();
+function move(direction) {
+	p.move(VEC[direction]);
+	if (!begun) {
+		begun = true;
+		resetTimer();
 	}
 
 	drawMaze(m);
 	drawPlayer(p);
 	drawState(p.state, p.score);
+}
+document.addEventListener('keydown', e => {
+	if (e.key.includes('Arrow')) {
+		e.preventDefault();
+		move(e.key.substring(5).toUpperCase());
+	}
+	else if (e.key == 'r')
+		p = new Player(m);
+});
+document.addEventListener('swiped', e => {
+	e.preventDefault();
+	move(e.detail.dir.toUpperCase());
 });
 
 window.addEventListener('load', e => {
