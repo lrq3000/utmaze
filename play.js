@@ -34,13 +34,19 @@ function move(direction) {
 	drawPlayer(p);
 	drawState(p.state, p.score);
 }
+function reset() {
+	p = new Player(m);
+	drawMaze(m);
+	drawPlayer(p);
+	drawState(p.state, p.score);
+}
 document.addEventListener('keydown', e => {
 	if (e.key.includes('Arrow')) {
 		e.preventDefault();
 		move(e.key.substring(5).toUpperCase());
 	}
 	else if (e.key == 'r')
-		p = new Player(m);
+		reset();
 });
 document.addEventListener('swiped', e => {
 	e.preventDefault();
