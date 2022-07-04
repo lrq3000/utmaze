@@ -20,6 +20,9 @@ html {
 	color: white;
 	font-family: 'UTDetermination';
 }
+body {
+	overscroll-behavior: contain;
+}
 
 header {
 	margin: 0 auto;
