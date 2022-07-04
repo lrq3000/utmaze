@@ -10,7 +10,7 @@ const TILE = {
 	PLAID:	8,	// Start and End tile
 	ELEC:	9	// Electrified blue tile
 };
-const COLOR = ['Black','#FEBFC0','#FFC049','#C000C0','#9BFF78','#4040FF','#FFFF80','#FF3F3F','#555555','#4040FF'];
+const COLOR = [false,'#FEBFC0','#FFC049','#C000C0','#9BFF78','#4040FF','#FFFF80','#FF3F3F','#555555','#4040FF'];
 const STATE = {
 	NEUTRAL:0,
 	ORANGES:1,

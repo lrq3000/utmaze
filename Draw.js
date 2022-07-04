@@ -7,6 +7,12 @@ class Img extends Image {	// Because I'm sick of defining the `src` on a second 
 	}
 }
 
+function grayscale(x,y) {
+	let z = Math.sin(x**3*y**4+x+y) * 10000;
+	let rng = Math.floor((z - Math.floor(z)) * 7 + 8);
+	return '#' + rng.toString(16).repeat(6);
+}
+
 var scale = 1;
 const plaid = new Img('graphics/plaid.png');
 let cx1;
@@ -22,6 +28,7 @@ function drawMaze(maze) {
 	canvas.height = h*scale;
 	cx1.scale(scale,scale);
 
+
 	for (let x=0; x<maze.width; x++) {
 		for (let y=0; y<maze.height; y++) {
 			let tile = maze[x][y];
@@ -30,7 +37,7 @@ function drawMaze(maze) {
 			else {
 				cx1.beginPath();
 				cx1.rect(b*x,b*y,b,b);
-				cx1.fillStyle = (COLOR[tile] || 'black');
+				cx1.fillStyle = (COLOR[tile] || grayscale(x,y));
 				cx1.fill();
 				cx1.closePath();
 			}
