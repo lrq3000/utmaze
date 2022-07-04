@@ -22,6 +22,12 @@ function tick() {
 	drawState(p.state, p.score);
 }
 
+async function share() {
+	try {
+		fetch('rainmaze/share.php?code=' + m.toBase64());
+	}
+	catch (e) {}
+}
 
 function openNewMaze() {
 	window.location = 'play.html?w=' + width.value + '&h=' + height.value;
