@@ -11,10 +11,12 @@ function init() {
 if (qs.get('code'))
 	m = Maze.fromBase64(qs.get('code'));
 else if (qs.get('share')) {
-	let c = fetch('rainmaze/share.php?share=' + qs.get('share')).json();
-	if (c) {
+	let req = new XMLHttpRequest();
+	req.open('GET', 'share.php?share=' + qs.get('share'), false);
+	req.send();
+	let c = JSON.parse(req.response);
+	if (c)
 		m = Maze.fromBase64(c);
-	}
 	else
 		init();
 }
@@ -37,7 +39,7 @@ async function share() {
 	let link = 'https://loganhall.net/rainmaze/play.html';
 	try {
 		let r = await fetch(
-			'rainmaze/share.php?code=' + m.toBase64(),
+			'share.php?code=' + m.toBase64(),
 			{
 				method: 'GET',
 				headers: {
@@ -51,6 +53,7 @@ async function share() {
 			link += '?share=' + s;
 		else {
 			console.log('Could not generate sharecode');
+			console.log(s);
 			return;
 		}
 	}

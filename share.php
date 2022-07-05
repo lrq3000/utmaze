@@ -1,8 +1,8 @@
 <?php
 function dbInit() {
 	try {
-		$config = explode("\n", file_get_contents('sharecodes_db.txt'));
-		$db = new PDO("mysql:host={$db[0]};dbname={$db[1]};port={$db[2]}", $db[3], $db[4]);
+		$cfg = explode("\n", file_get_contents('sharecode_db.txt'));
+		$db = new PDO("mysql:host={$cfg[0]};dbname={$cfg[1]};port={$cfg[2]}", $cfg[3], $cfg[4]);
 		return $db;
 	} catch (\PDOException $e) {
 		error_log($e->getMessage());
@@ -14,13 +14,13 @@ if ($_GET['code']) {
 	/* Check for legitimate levelcode */
 	// Get maze height
 	$b64s = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
-	$h = strpos($b64s, $_GET['code'][0]);
+	$h = 1 + strpos($b64s, $_GET['code'][0]);
 	// Even if legit, ignore if <8 characters
 	// Check proper encoding
 	// Check for valid length (must be len%h==0 or ==1 where len excludes the 'height' character)
 	if (
 		strlen($_GET['code']) < 8
-		or preg_match('[^0-9A-Za-z]', $_GET['code'])
+		or preg_match('[^0-9A-Za-z_-]', $_GET['code'])
 		or (strlen($_GET['code']) - 1) % $h > 1
 	) {
 		print json_encode(false);
