@@ -4,12 +4,23 @@ let width = document.getElementById('w');
 let height = document.getElementById('h');
 
 let qs = new URLSearchParams(window.location.search);
-if (qs.get('code'))
-	m = Maze.fromBase64(qs.get('code'));
-else {
+function init() {
 	m = Maze.random(Number(qs.get('w')) || 8, Number(qs.get('h')) || 6);
 	history.replaceState(null,'',window.location.pathname + "?code=" + m.toBase64());
 }
+if (qs.get('code'))
+	m = Maze.fromBase64(qs.get('code'));
+else if (qs.get('share')) {
+	let c = fetch('rainmaze/share.php?share=' + qs.get('share')).json();
+	if (c) {
+		m = Maze.fromBase64(c);
+	}
+	else
+		init();
+}
+else
+	init();
+
 width.value = m.width;
 height.value = m.height;
 
@@ -35,7 +46,13 @@ async function share() {
 				}
 			}
 		);
-		link += '?share=' + await r.json();
+		let s = await r.json();
+		if (s)
+			link += '?share=' + s;
+		else {
+			console.log('Could not generate sharecode');
+			return;
+		}
 	}
 	catch (e) {
 		console.log(e);
