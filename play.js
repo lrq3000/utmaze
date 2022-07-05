@@ -39,13 +39,14 @@ async function share() {
 	let link = 'https://loganhall.net/rainmaze/play.html';
 	try {
 		let r = await fetch(
-			'share.php?code=' + m.toBase64(),
+			'share.php',
 			{
-				method: 'GET',
+				method: 'POST',
 				headers: {
 					Accept: 'application/json',
 					'Content-Type': 'application/json'
-				}
+				},
+				body: 'share=' + m.toBase64()
 			}
 		);
 		let s = await r.json();

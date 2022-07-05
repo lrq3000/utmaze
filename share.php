@@ -10,7 +10,7 @@ function dbInit() {
 }
 
 /* Check if request is for sharecode or levelcode */
-if ($_GET['code']) {
+if ($_POST['code']) {
 	/* Check for legitimate levelcode */
 	// Get maze height
 	$b64s = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
