@@ -23,10 +23,31 @@ function tick() {
 }
 
 async function share() {
+	let link = 'https://loganhall.net/rainmaze/play.html';
 	try {
-		fetch('rainmaze/share.php?code=' + m.toBase64());
+		let r = await fetch(
+			'rainmaze/share.php?code=' + m.toBase64(),
+			{
+				method: 'GET',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json'
+				}
+			}
+		);
+		link += '?share=' + await r.json();
 	}
-	catch (e) {}
+	catch (e) {
+		console.log(e);
+		link += '?code=' + m.toBase64();
+	}
+
+	try {
+		await navigator.clipboard.writeText(link);
+	}
+	catch (e) {
+		alert('Copy: ' + link);
+	}
 }
 
 function openNewMaze() {
