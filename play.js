@@ -44,14 +44,20 @@ async function share() {
 				method: 'POST',
 				headers: {
 					Accept: 'application/json',
-					'Content-Type': 'application/json'
+					'Content-Type': 'application/x-www-form-urlencoded'
 				},
-				body: 'share=' + m.toBase64()
+				body: new URLSearchParams({code: m.toBase64()}).toString()
 			}
 		);
 		let s = await r.json();
-		if (s)
+		if (s) {
 			link += '?share=' + s;
+			let btn = document.getElementById('btn_share');
+			btn.innerHTML = "\u2714";
+			btn.style.border = '2px solid green';
+			btn.style.color = 'green';
+
+		}
 		else {
 			console.log('Could not generate sharecode');
 			console.log(s);
