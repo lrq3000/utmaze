@@ -87,6 +87,12 @@ document.addEventListener('popstate', e => {
 });
 
 window.addEventListener('load', e => {
-	doMazeLoad(new URLSearchParams(window.location.search).get('code'));
+	let qs = new URLSearchParams(window.location.search);
+	if (qs.get('code'))
+		doMazeLoad(qs.get('code'));
+	else if (qs.get('share')) {
+		doMazeLoad(translateShareCode(qs.get('share')));
+		pushCode();
+	}
 	tick()
 });

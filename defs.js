@@ -19,3 +19,10 @@ const STATE = {
 }
 
 function randInt(n) { return Math.floor(Math.random() * n); }
+
+function translateShareCode(share) {
+	let req = new XMLHttpRequest();
+	req.open('GET', 'share.php?share=' + share, false);
+	req.send();
+	return JSON.parse(req.response);
+}

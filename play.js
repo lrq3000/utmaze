@@ -11,10 +11,7 @@ function init() {
 if (qs.get('code'))
 	m = Maze.fromBase64(qs.get('code'));
 else if (qs.get('share')) {
-	let req = new XMLHttpRequest();
-	req.open('GET', 'share.php?share=' + qs.get('share'), false);
-	req.send();
-	let c = JSON.parse(req.response);
+	let c = translateShareCode(qs.get('share'));
 	if (c)
 		m = Maze.fromBase64(c);
 	else
