@@ -78,7 +78,7 @@ function openNewMaze() {
 	window.location = 'play.html?w=' + width.value + '&h=' + height.value;
 }
 function openEditor() {
-	window.location = 'edit.html' + new URLSearchParams(window.location.search).toString();
+	window.location = 'edit.html?' + new URLSearchParams(window.location.search).toString();
 }
 
 let begun = false;
