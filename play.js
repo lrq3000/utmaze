@@ -92,7 +92,9 @@ function move(direction) {
 	tick();
 }
 function reset() {
+	let s = p.score;
 	p = new Player(m);
+	p.score = s;
 	tick();
 }
 document.addEventListener('keydown', e => {
