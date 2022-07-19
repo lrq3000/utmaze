@@ -23,7 +23,7 @@ function drawMaze(maze) {
 	let h = b * maze.height;
 	let marginHeight = document.getElementsByTagName('header')[0].offsetHeight + document.getElementsByTagName('footer')[0].offsetHeight;
 	// Magic numbers '16' and '48' are rough margins which are nigh-impossible to get with pure JS
-	scale = Math.min((window.innerWidth - 16) / w, (window.innerHeight - marginHeight - 48) / h, 1);
+	scale = Math.min((window.innerWidth - 16) / w, (window.innerHeight - marginHeight - 60) / h, 1);
 	canvas.width = w*scale;
 	canvas.height = h*scale;
 	cx1.scale(scale,scale);
