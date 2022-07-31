@@ -56,7 +56,7 @@ class Maze extends Array {
 			if (this[x][y] == TILE.PURPLE) {
 				// Solution path must not turn on purple tiles,
 				// otherwise we risk unsolvability
-				let prev = sPath.at(-2);
+				let prev = sPath[sPath.length-2];
 				x2 += x - prev.x;
 				y2 += y - prev.y;
 			}
